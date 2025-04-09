@@ -1,140 +1,66 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import users from './users.json';
-import { 
-  TextField, 
-  Button, 
-  Card, 
-  CardContent, 
-  Typography,
-  IconButton,
-  InputAdornment,
-  Box,
-  Divider
-} from '@mui/material';
-import { Person, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
+import axios from "axios";
+import AuthContext from "../context/AuthContext";
+
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      
-      const user = users.find(
-        (u) => u.username === username && u.password === password
+      const { data } = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        { email, password },
+        { headers: { "Content-Type": "application/json" } }
       );
-      if (user) {
-        navigate("/", { state: { role: user.role } });
-      } else {
-        setError("Invalid username or password");
-      }
-    } catch (err) {
-      console.error("Error fetching data:", err);
-      setError("Failed to fetch data. Please try again later.");
+
+      localStorage.setItem("token", data.token);
+      login(data.user);
+      alert("Login successful!");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Login Error:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "Login failed!");
     }
   };
 
-  
-
-  // ...existing state code...
-
   return (
-    <Box className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100">
-      <Card elevation={3} className="w-full max-w-md bg-white rounded-xl">
-        <CardContent className="p-8">
-          {/* Logo/Brand Section */}
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 mx-auto mb-4 bg-blue-600 rounded-full flex items-center justify-center">
-              <Lock className="text-white text-3xl" />
-            </div>
-            <Typography variant="h4" className="font-semibold text-gray-800">
-              Welcome Back
-            </Typography>
-            <Typography variant="body2" className="text-gray-600 mt-2">
-              Please sign in to your account
-            </Typography>
-          </div>
-
-          <Divider className="my-6" />
-
-          <form onSubmit={handleLogin} className="space-y-6">
-            <TextField
-              fullWidth
-              label="Username"
-              variant="outlined"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+      <div className="card p-5 shadow-lg" style={{ width: "100%", maxWidth: "400px" }}>
+        <h3 className="text-center mb-4">Welcome Back 👋</h3>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label fw-bold">Email address</label>
+            <input
+              type="email"
+              className="form-control"
+              placeholder="name@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Person className="text-gray-400" />
-                  </InputAdornment>
-                ),
-                className: "bg-gray-50"
-              }}
             />
-
-            <TextField
-              fullWidth
-              label="Password"
-              type={showPassword ? "text" : "password"}
+          </div>
+          <div className="mb-3">
+            <label className="form-label fw-bold">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Lock className="text-gray-400" />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                      className="text-gray-400"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-                className: "bg-gray-50"
-              }}
             />
-
-            {error && (
-              <Typography color="error" className="text-center text-sm bg-red-50 p-2 rounded">
-                {error}
-              </Typography>
-            )}
-
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              size="large"
-              className="bg-blue-600 hover:bg-blue-700 py-3 text-lg normal-case"
-              sx={{
-                boxShadow: '0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08)',
-                textTransform: 'none'
-              }}
-            >
-              Sign In
-            </Button>
-
-            <Typography variant="body2" className="text-center text-gray-500 mt-4">
-              Forgot your password? <a href="#" className="text-blue-600 hover:text-blue-700">Reset it here</a>
-            </Typography>
-          </form>
-        </CardContent>
-      </Card>
-    </Box>
+          </div>
+          <button type="submit" className="btn btn-primary w-100 mt-2">
+            Sign In
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 
