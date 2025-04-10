@@ -69,9 +69,9 @@ const ResponsiveAppBar = () => {
             DOORSTEP
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" },padding: 0 }}>
             {pages.map((page) => (
-              <Button key={page} sx={{ my: 2, color: "white", display: "block", mx: 2 }}>
+              <Button key={page} sx={{ my: 2, color: "white", display: "block", mx: 2, padding: 0 }} onClick={handleCloseNavMenu}>
                 <Link to={page === "Home" ? "/" : `/${page.toLowerCase()}`} style={{ textDecoration: "none", color: "inherit" }}>
                   {page}
                 </Link>

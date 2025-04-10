@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Card, Table, Form, Modal } from "react-bootstrap";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [show, setShow] = useState(false);
@@ -14,7 +16,7 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/users");
+      const res = await axios.get(`${API_URL}/api/users`);
       setUsers(res.data);
     } catch (error) {
       console.error("Error fetching users", error);
@@ -22,7 +24,7 @@ const Users = () => {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/users/${id}`);
+    await axios.delete(`${API_URL}/api/users/${id}`);
     fetchUsers();
   };
 
@@ -42,9 +44,9 @@ const Users = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`http://localhost:5000/api/users/${editId}`, formData);
+      await axios.put(`${API_URL}/api/users/${editId}`, formData);
     } else {
-      await axios.post("http://localhost:5000/api/users", formData);
+      await axios.post(`${API_URL}/api/users`, formData);
     }
     handleClose();
     fetchUsers();

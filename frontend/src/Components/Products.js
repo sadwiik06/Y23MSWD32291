@@ -14,7 +14,8 @@ function Product() {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
 
-  const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL = process.env.REACT_APP_API_URL + '/api/products';
+
 
   useEffect(() => {
     fetchProducts();
@@ -211,7 +212,7 @@ function Product() {
                     <>
                       {editingId ? (
                         <>
-                          <PencilSquare className="me-2" />
+                          
                           Update
                         </>
                       ) : (

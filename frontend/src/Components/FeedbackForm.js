@@ -17,7 +17,11 @@ const FeedbackForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/submit-feedback', formData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/feedback`, formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       alert(response.data.message);
     } catch (error) {
       alert('Error submitting feedback.');
