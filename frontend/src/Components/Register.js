@@ -14,7 +14,13 @@ const Register = () => {
     e.preventDefault();
     setError("");
     try {
-      await axios.post("/api/auth/register", { name, email, password, role });
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
+        name,
+        email,
+        password,
+        role,
+      });
+      
       alert("Registration successful! Please login.");
       navigate("/login");
     } catch (error) {
