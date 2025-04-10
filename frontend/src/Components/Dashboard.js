@@ -10,12 +10,17 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="card text-center shadow p-4">
-        <h1 className="text-primary mb-4">Welcome to Your Dashboard</h1>
-        <p className="lead">You're now logged in. Explore the features or log out below.</p>
-        <button className="btn btn-outline-danger mt-3" onClick={handleLogout}>
-          <i className="bi bi-box-arrow-right me-2"></i> Logout
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-pink-100 via-blue-100 to-purple-100 px-4">
+      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md text-center border border-blue-200">
+        <h1 className="text-3xl font-bold text-blue-600 mb-4">Welcome to DoorStep</h1>
+        <p className="text-gray-600 mb-6">
+          You're now logged in. Feel free to explore or log out when you're done.
+        </p>
+        <button
+          onClick={handleLogout}
+          className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-5 rounded-lg transition duration-200"
+        >
+          Logout
         </button>
       </div>
     </div>

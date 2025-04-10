@@ -43,7 +43,7 @@ const ResponsiveAppBar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("authToken"); // Clear authentication token
-    navigate("/login"); // Redirect to login page
+    navigate("/"); // Redirect to login page
   };
 
   return (
